@@ -1,6 +1,8 @@
 const mysql = require('mysql2');
 const inquirer = require('inquirer');
 const table = require('console.table');
+const { restoreDefaultPrompts } = require('inquirer');
+var deptNames = [];
 
 const db = mysql.createConnection(
     {
@@ -42,6 +44,7 @@ const initPrompt = async () => {
             departmentQueryPrompt();
             break;
         case 'Add a role':
+            getDeptNames();
             roleQueryPrompt();
             break;
         case 'Add an employee':
@@ -69,11 +72,11 @@ const departmentQueryPrompt = async () => {
         }
     ]).then(response => {
         addDepartment(response.name);
-        const newDepartment = new Department(response.name);
     })
 };
 
 const roleQueryPrompt = async () => {
+    
     await inquirer.prompt([
         {
         type: 'input',
@@ -86,16 +89,16 @@ const roleQueryPrompt = async () => {
         name: 'salary'
         },
         {
-        type: 'input',
+        type: 'list',
         message: 'Please input new role department: ',
-        name: 'department'
+        name: 'department',
+        choices: deptNames
         }
     ]).then(response => {
         addRole(response);
-        console.log("Role successfully added!");
-    }).catch(err => {
-        console.log(err);
-    })
+        console.log(`\nRole successfully added!\n`);
+        console.log(deptNames);
+    });
 };
 
 const employeeQueryPrompt = async () => {
@@ -117,9 +120,23 @@ const viewDepartments = () => {
 };
 
 const viewRoles = () => {
+    var role = [];
     db.query(`SELECT * FROM role`, (err, res) => {
-        console.log(res);
-    })
+        if (err) {
+          console.log(err);
+        };
+        // console.log(res);
+        for(var i = 0; i < res.length; i++) {
+            role[i].push({
+                name: res.title,
+                salary: res.salary,
+                role_id: res.id,
+                department_id: res.department_id
+            });
+        };
+        console.log(role);
+    });
+    // console.log(role);
     init();
 };
 
@@ -175,6 +192,19 @@ const updateEmployee = (employee, newRole) => {
     })
     init();
 };
+
+
+const getDeptNames = () => {
+    db.query(`SELECT * FROM department`, (err, res) => {
+        if (err) {
+          console.log(err);
+        };
+        for(var i = 0; i < res.length; i++) {
+            deptNames[i] = res[i].name;
+        };
+    });
+};
+
 
 function init() {
     initPrompt();
