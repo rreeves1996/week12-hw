@@ -1,10 +1,6 @@
 const mysql = require('mysql2');
 const inquirer = require('inquirer');
 const table = require('console.table');
-const Department = require('./lib/classes/Department');
-const Role = require('./lib/classes/Role');
-const Employee = require('./lib/classes/Employee');
-
 
 const db = mysql.createConnection(
     {
@@ -35,7 +31,6 @@ const initPrompt = async () => {
         switch(response.option) {
         case 'View all departments':
             viewDepartments();
-
             break;
         case 'View all roles':
             viewRoles();
@@ -62,6 +57,8 @@ const initPrompt = async () => {
     });
 };
 
+
+// QUERY PROMPTS
 
 const departmentQueryPrompt = async () => {
     await inquirer.prompt([
@@ -144,18 +141,18 @@ const addDepartment = (department) => {
 };
 
 const addRole = (role) => {
-    db.query(`SELECT * FROM department WHERE name = ?`, role.department, (err, res) => {
+    // Pull department id from name of inputted department
+    db.promise().query(`SELECT id FROM department WHERE name = ?`, role.department, (err, res) => {
         if (err) {
           console.log(err);
-        }
-        role.department_id = res.department_id;
-    });
-    db.query(`INSERT INTO role (title, salary, department_id) VALUES (${role.title}, ${role.salary}, ${role.department_id})`, (err, res) => {
+        };
+    }).then(([res]) => {
+    // Add role in to role table
+    db.query(`INSERT INTO role (title, salary, department_id) VALUES ("${role.role}", "${role.salary}", "${res[0].id}")`, (err, res) => {
         if (err) {
             console.log(err)
-        }
-        console.log(res);
-    })
+        };
+    })});
     init();
 };
 
