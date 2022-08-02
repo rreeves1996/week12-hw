@@ -1,20 +1,21 @@
 INSERT INTO department (name)
-VALUES  ("Quality control department"),
+VALUES  ("Management"),
+        ("Quality control department"),
         ("Customer relations department"),
-        ("HR department"),
-        ("Management");
+        ("HR department");
 
 INSERT INTO role (title, salary, department_id)
-VALUES  ("QC Tester", "70000", 1),
-        ("Customer Service Specialist", "55000", 2),
-        ("HR Specialist", "75000", 3),
-        ("Team Lead", "500000", 4);
+VALUES  ("Team Lead", "500000", 1),
+        ("QC Tester", "70000", 2),
+        ("Customer Service Specialist", "55000", 3),
+        ("HR Specialist", "75000", 4);
         
 
 INSERT INTO employee (first_name, last_name, role_id)
-VALUES  ("Ryan", "Reeves", 4),
+VALUES  ("Ryan", "Reeves", 1),
+        ("Man", "Ejherr", 1),
         ("Jim", "Johnson", 2),
         ("Victoria", "Antonelli", 2),
-        ("Daniel", "Tompkins", 1),
-        ("Spencer", "Sotello", 1),
+        ("Daniel", "Tompkins", 4),
+        ("Spencer", "Sotello", 4),
         ("Bartholomule", "Smith", 3);
