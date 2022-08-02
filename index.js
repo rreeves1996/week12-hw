@@ -1,7 +1,7 @@
 const mysql = require('mysql2');
 const inquirer = require('inquirer');
 const table = require('console.table');
-const { restoreDefaultPrompts } = require('inquirer');
+
 var deptNames = [];
 
 const db = mysql.createConnection(
