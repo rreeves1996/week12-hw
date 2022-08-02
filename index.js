@@ -75,7 +75,6 @@ const departmentQueryPrompt = async () => {
 };
 
 const roleQueryPrompt = async () => {
-    
     await inquirer.prompt([
         {
         type: 'input',
@@ -108,7 +107,7 @@ const updateQueryPrompt = async () => {
 };
 
 
-// QUERIES
+// VIEW x
 
 const viewDepartments = () => {
     db.query(`SELECT * FROM department`, (err, res) => {
@@ -120,24 +119,18 @@ const viewDepartments = () => {
 };
 
 const viewRoles = () => {
-    var title = [];
-    var roleID = [];
-    var salary = [];
     db.query(`SELECT * FROM role`, (err, res) => {
         if (err) {
           console.log(err);
         };
         for(let i = 0; i < res.length; i++) {
-            title.push(res[i].title);
-            roleID.push(res[i].id);
-            salary.push(res[i].salary);
-            
+            // Find department name from department_id
             db.promise().query(`SELECT name FROM department WHERE id = ?`, res[i].department_id, (err, name) => {
             if (err) {
                 console.log(err);
             };
             }).then(([deptName]) => {
-                console.log(`\n${deptName[0].name.toUpperCase()}\n${title[i]} (Role ID: ${roleID[i]}) - $${salary[i]}`);
+                console.log(`\n${deptName[0].name.toUpperCase()}\n${res[i].title} (Role ID: ${res[i].id}) - $${res[i].salary}`);
             });
         };
     });
@@ -154,6 +147,9 @@ const viewEmployees = () => {
         initPrompt();
     }, 100);
 };
+
+
+// ADD x
 
 const addDepartment = (department) => {
     db.query(`INSERT INTO department (name) VALUES (${department.name})`, (err, res) => {
@@ -210,6 +206,8 @@ const updateEmployee = (employee, newRole) => {
 };
 
 
+// QUERY HELPERS
+
 const getDeptNames = () => {
     db.query(`SELECT * FROM department`, (err, res) => {
         if (err) {
@@ -221,6 +219,8 @@ const getDeptNames = () => {
     });
 };
 
+
+// INIT
 
 function init() {
     initPrompt();
