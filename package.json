@@ -9,7 +9,7 @@
   "author": "Ryan Reeves",
   "license": "ISC",
   "dependencies": {
-    "inquirer": "^8.0.0",
+    "inquirer": "^6.4.1",
     "console.table": "^0.10.0",
     "mysql2": "^2.3.3"
   }

@@ -56,7 +56,6 @@ const initPrompt = async () => {
         default:
             break;
         };
-        console.log(response);
     });
 };
 
@@ -97,7 +96,6 @@ const roleQueryPrompt = async () => {
     ]).then(response => {
         addRole(response);
         console.log(`\nRole successfully added!\n`);
-        console.log(deptNames);
     });
 };
 
@@ -116,35 +114,45 @@ const viewDepartments = () => {
     db.query(`SELECT * FROM department`, (err, res) => {
         console.log(res);
     })
-    init();
+    setTimeout(() => {
+        initPrompt();
+    }, 100);
 };
 
 const viewRoles = () => {
-    var role = [];
+    var title = [];
+    var roleID = [];
+    var salary = [];
     db.query(`SELECT * FROM role`, (err, res) => {
         if (err) {
           console.log(err);
         };
-        // console.log(res);
-        for(var i = 0; i < res.length; i++) {
-            role[i].push({
-                name: res.title,
-                salary: res.salary,
-                role_id: res.id,
-                department_id: res.department_id
+        for(let i = 0; i < res.length; i++) {
+            title.push(res[i].title);
+            roleID.push(res[i].id);
+            salary.push(res[i].salary);
+            
+            db.promise().query(`SELECT name FROM department WHERE id = ?`, res[i].department_id, (err, name) => {
+            if (err) {
+                console.log(err);
+            };
+            }).then(([deptName]) => {
+                console.log(`\n${deptName[0].name.toUpperCase()}\n${title[i]} (Role ID: ${roleID[i]}) - $${salary[i]}`);
             });
         };
-        console.log(role);
     });
-    // console.log(role);
-    init();
+    setTimeout(() => {
+        initPrompt();
+    }, 100);
 };
 
 const viewEmployees = () => {
     db.query(`SELECT * FROM employee`, (err, res) => {
         console.log(res);
     })
-    init();
+    setTimeout(() => {
+        initPrompt();
+    }, 100);
 };
 
 const addDepartment = (department) => {
@@ -154,7 +162,9 @@ const addDepartment = (department) => {
         }
         console.log(res);
     })
-    init();
+    setTimeout(() => {
+        initPrompt();
+    }, 100);
 };
 
 const addRole = (role) => {
@@ -170,7 +180,9 @@ const addRole = (role) => {
             console.log(err)
         };
     })});
-    init();
+    setTimeout(() => {
+        initPrompt();
+    }, 100);
 };
 
 const addEmployee = (employee) => {
@@ -180,7 +192,9 @@ const addEmployee = (employee) => {
         }
         console.log(res);
     })
-    init();
+    setTimeout(() => {
+        initPrompt();
+    }, 100);
 };
 
 const updateEmployee = (employee, newRole) => {
@@ -190,7 +204,9 @@ const updateEmployee = (employee, newRole) => {
         }
         console.log(res);
     })
-    init();
+    setTimeout(() => {
+        initPrompt();
+    }, 100);
 };
 
 
