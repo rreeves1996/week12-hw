@@ -12,7 +12,7 @@ const db = mysql.createConnection(
     {
         host: "localhost",
         user: "root",
-        password: "root",
+        password: "Ry11Re@@33",
         database: "employee_db"
     },
     console.log("Connected to the database")
@@ -240,7 +240,7 @@ const viewEmployees = () => {
 
 const addDepartment = (department) => {
     // Insert inputted department name in to "department" table
-    db.promise().query(`INSERT INTO department (name) VALUES ("${department.name}")`, (err, res) => {
+    db.query(`INSERT INTO department (name) VALUES ("${department.name}")`, (err, res) => {
         if (err) {
             console.log(err)
         };
@@ -282,7 +282,7 @@ const addEmployee = (employee) => {
         };
     }).then(([res]) => {
         // Insert new employee in to "employee" table
-        db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${employee.first_name}", "${employee.last_name}", "${res[0].id}", "${managerID}")`, (err, res) => {
+        db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${employee.first_name}", "${employee.last_name}", "${res[0].id}", "${managerID[0]}")`, (err, res) => {
             if (err) {
                 console.log(err)
             };
